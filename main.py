@@ -14,7 +14,7 @@ class MyWidget(QMainWindow):
         super().__init__()
         f = io.StringIO(template)
         uic.loadUi(f, self)
-        self.connection = sq.connect('coffee.db')
+        self.connection = sq.connect('coffee.sqlite')
         self.cur = self.connection.cursor()
         query = f'''SELECT ID, a AS 'Название сорта', b AS 'Степень обжарки', c AS 'Молотый/в зернах', d AS 'описание вкуса', 'e' AS 'Цена', f AS 'Обьем упаковки'  FROM coffee'''
 

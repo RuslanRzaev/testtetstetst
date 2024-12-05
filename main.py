@@ -1,22 +1,17 @@
-import io
 import sys
 import sqlite3 as sq
 
-from PyQt6 import uic
 from PyQt6.QtWidgets import QTableWidgetItem, QDialog, QMessageBox
 from PyQt6.QtWidgets import QApplication, QMainWindow
+from main1 import Ui_MainWindow
+from addEditCoffeeForm import Ui_Dialog
 
 
-with open('main.ui', encoding='utf-8') as file:
-    f = file.read()
-    template = f
-
-class MyWidget(QMainWindow):
+class MyWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        f = io.StringIO(template)
-        uic.loadUi(f, self)
-        self.connection = sq.connect('coffee.sqlite')
+        self.setupUi(self)
+        self.connection = sq.connect('data/coffee.sqlite')
         self.cur = self.connection.cursor()
         self.add.clicked.connect(self.add_handler)
         self.edit.clicked.connect(self.edit_handler)
@@ -60,19 +55,13 @@ class MyWidget(QMainWindow):
             self.lst = None
 
 
-with open('addEditCoffeeForm.ui', encoding='utf-8') as file:
-    f = file.read()
-    tempalate2 = f
-
-
-class Window(QDialog):
+class Window(QDialog, Ui_Dialog):
     def __init__(self, parent, id=None, mode=None, query=None):
         super().__init__()
-        f = io.StringIO(tempalate2)
-        uic.loadUi(f, self)
+        self.setupUi(self)
         self.query = query
         self.cancel.clicked.connect(self.reject)
-        self.connection = sq.connect('coffee.sqlite')
+        self.connection = sq.connect('data/coffee.sqlite')
         self.cur = self.connection.cursor()
         if mode == 'edit':
             self.id = ''.join(id)
